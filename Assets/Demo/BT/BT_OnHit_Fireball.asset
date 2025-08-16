@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: Assembly-CSharp:XSkillSystem:ActionNode
   graph: {fileID: 11400000}
-  position: {x: -328, y: 168}
+  position: {x: -376, y: 152}
   folded: 0
   ports:
     keys:
@@ -90,7 +90,7 @@ MonoBehaviour:
   In: {fileID: 0}
   _guid: 50cc681ceb7a425da1fe0b0dc76f4f7b
   ActionId: ApplyDamage
-  UserData: {fileID: 0}
+  UserData: {fileID: 11400000, guid: 49edfaf520c8257498f0c0df0af93d1b, type: 2}
 --- !u!114 &5201694397216233977
 MonoBehaviour:
   m_ObjectHideFlags: 0

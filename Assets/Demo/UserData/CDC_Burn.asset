@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc60fd7afbf043c4a8ba5fbb8c4c358d, type: 3}
   m_Name: CDC_Burn
   m_EditorClassIdentifier: 
-  Formula: {fileID: 0}
-  Numbers: {fileID: 0}
+  Formula: {fileID: 11400000, guid: 49edfaf520c8257498f0c0df0af93d1b, type: 2}
+  Numbers: {fileID: 11400000, guid: c9201d1f35e6bb14799605ff9e328315, type: 2}
   Tags: []
   WriteToBB: 1
