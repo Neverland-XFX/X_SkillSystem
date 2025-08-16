@@ -5,13 +5,13 @@ using UnityEngine;
 namespace XSkillSystem
 {
     // =================== 随机选择 ===================
-    public sealed class RandomSelectorRT<TCtx> : RTNodeBase<TCtx>
+    public sealed class RTRandomSelector<TCtx> : RTNodeBase<TCtx>
     {
         private readonly IRTNode<TCtx>[] _children;
         private readonly IList<float> _weights;
         private int _picked = -1;
 
-        public RandomSelectorRT(string name, IRTNode<TCtx>[] children, IList<float> weights, IBTTracer tracer) : base(
+        public RTRandomSelector(string name, IRTNode<TCtx>[] children, IList<float> weights, IBTTracer tracer) : base(
             name, tracer)
         {
             _children = children ?? Array.Empty<IRTNode<TCtx>>();

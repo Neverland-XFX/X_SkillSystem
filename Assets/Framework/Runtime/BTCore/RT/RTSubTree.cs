@@ -1,11 +1,11 @@
 ﻿namespace XSkillSystem
 {
     // =================== 子树包装 ===================
-    public sealed class SubTreeRT<TCtx> : RTNodeBase<TCtx>
+    public sealed class RTSubTree<TCtx> : RTNodeBase<TCtx>
     {
         private readonly BTTree<TCtx> _tree;
 
-        public SubTreeRT(string name, BTTree<TCtx> subTree, IBTTracer tracer) : base(name, tracer)
+        public RTSubTree(string name, BTTree<TCtx> subTree, IBTTracer tracer) : base(name, tracer)
         {
             _tree = subTree;
         }

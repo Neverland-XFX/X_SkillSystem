@@ -3,7 +3,7 @@
 namespace XSkillSystem
 {
     // 读条：在 Duration 内运行子树（通常为空或并行动作），遇到打断则失败
-    public sealed class CastTimeRT<TCtx> : RTDecorator<TCtx>
+    public sealed class RTCastTime<TCtx> : RTDecorator<TCtx>
     {
         readonly float _duration;
         readonly Channel _channel;
@@ -17,7 +17,7 @@ namespace XSkillSystem
         int _tokInterrupt;
         StateMachine _sm;
 
-        public CastTimeRT(string name, IRTNode<TCtx> child, float duration, Channel channel, int priority,
+        public RTCastTime(string name, IRTNode<TCtx> child, float duration, Channel channel, int priority,
             StateId interruptStates,
             Func<TCtx, StateMachine> getSM, Func<TCtx, float> getDelta, IBTTracer tracer)
             : base(name, child, tracer)

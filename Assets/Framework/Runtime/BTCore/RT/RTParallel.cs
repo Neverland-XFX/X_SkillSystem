@@ -5,7 +5,7 @@ namespace XSkillSystem
 {
     public sealed class RTParallel<TCtx> : RTNodeBase<TCtx>
     {
-        readonly List<IRTNode<TCtx>> _children;
+       readonly List<IRTNode<TCtx>> _children;
         readonly BTParallelPolicy _policy;
         readonly int _threshold; // 当 policy = Threshold 时有效
         readonly bool _abortOnHardStop;

@@ -2,13 +2,13 @@
 
 namespace XSkillSystem
 {
-    public sealed class RepeatRT<TCtx> : RTDecorator<TCtx>
+    public sealed class RTRepeat<TCtx> : RTDecorator<TCtx>
     {
         readonly int _count;
         readonly bool _breakOnFailure;
         int _done;
 
-        public RepeatRT(string name, IRTNode<TCtx> child, int count, bool breakOnFailure, IBTTracer tracer)
+        public RTRepeat(string name, IRTNode<TCtx> child, int count, bool breakOnFailure, IBTTracer tracer)
             : base(name, child, tracer)
         {
             _count = Mathf.Max(1, count);

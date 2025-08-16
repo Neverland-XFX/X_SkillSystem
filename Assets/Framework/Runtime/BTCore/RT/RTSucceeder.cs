@@ -1,8 +1,8 @@
 ﻿namespace XSkillSystem
 {
-    public sealed class SucceederRT<TCtx> : RTDecorator<TCtx>
+    public sealed class RTSucceeder<TCtx> : RTDecorator<TCtx>
     {
-        public SucceederRT(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
+        public RTSucceeder(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
         {
         }
 

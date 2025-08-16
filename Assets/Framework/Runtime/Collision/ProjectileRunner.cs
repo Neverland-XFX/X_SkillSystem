@@ -33,13 +33,13 @@ namespace XSkillSystem
         // 本地碰撞缓冲，避免访问其它类的私有字段
         private static readonly Collider[] _tmpCols = new Collider[128];
 
+        
+        
         void OnEnable()
         {
             _timeLeft = Def ? Def.Lifetime : 8f;
             _pierced = 0;
             _hitCount.Clear();
-            _lastPos = transform.position;
-
             Bus?.Publish(new EV_ProjectileSpawn(gameObject));
         }
 
@@ -63,6 +63,7 @@ namespace XSkillSystem
             Caster = caster;
             transform.position = pos;
             transform.rotation = Quaternion.LookRotation(dir);
+            _lastPos = transform.position;
             Velocity = dir * (def ? def.Speed : 0f);
 
             Pool = pool;
@@ -125,6 +126,7 @@ namespace XSkillSystem
                         var go = hit.rigidbody ? hit.rigidbody.gameObject : hit.collider.gameObject;
                         if (TargetFilter.Pass(Caster, go, Def.TargetRule, dir) && CanHit(go))
                         {
+                            Debug.LogWarning($"hit!!,dist:{dist};dir:{dir};Radius:{Def.Radius};nextPos:{nextPos};lastPos:{_lastPos};Velocity:{Velocity};dt:{dt};trans.Pos:{transform.position}");
                             OnHit(go, hit.point, hit.normal, dir);
                             if (_pierced > Def.Pierce)
                             {

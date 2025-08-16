@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using XNode;
 
@@ -203,15 +204,15 @@ namespace XSkillSystem
                 SelectorNode n => CompileSelector(ctx, n),
                 ParallelNode n => CompileParallel(ctx, n),
                 
-                InverterNode n => new InverterRT<TCtx>(n.RuntimeName,
+                InverterNode n => new RTInverter<TCtx>(n.RuntimeName,
                     GetSingleChild(ctx, n, nameof(InverterNode.Child)), ctx.Tracer),
-                SucceederNode n => new SucceederRT<TCtx>(n.RuntimeName,
+                SucceederNode n => new RTSucceeder<TCtx>(n.RuntimeName,
                     GetSingleChild(ctx, n, nameof(SucceederNode.Child)), ctx.Tracer),
-                FailureNode n => new FailureRT<TCtx>(n.RuntimeName, GetSingleChild(ctx, n, nameof(FailureNode.Child)),
+                FailureNode n => new RTFailure<TCtx>(n.RuntimeName, GetSingleChild(ctx, n, nameof(FailureNode.Child)),
                     ctx.Tracer),
                 TimeoutNode n => new TimeoutDecoratorRT<TCtx>(n.RuntimeName,
                     GetSingleChild(ctx, n, nameof(TimeoutNode.Child)), n.Seconds, ctx.Tracer),
-                RepeatNode n => new RepeatRT<TCtx>(n.RuntimeName, GetSingleChild(ctx, n, nameof(RepeatNode.Child)),
+                RepeatNode n => new RTRepeat<TCtx>(n.RuntimeName, GetSingleChild(ctx, n, nameof(RepeatNode.Child)),
                     n.Count, n.BreakOnFailure, ctx.Tracer),
                 WaitNode n => new WaitRT<TCtx>(n.RuntimeName, n.Seconds, ctx.Tracer),
 
@@ -247,13 +248,13 @@ namespace XSkillSystem
         static IRTNode<TCtx> CompileSequence<TCtx>(BuildCtx<TCtx> ctx, SequenceNode n)
         {
             var arr = GetListChildren(ctx, n, nameof(SequenceNode.Children));
-            return new SequenceRT<TCtx>(n.RuntimeName, arr, ctx.Tracer);
+            return new RTSequence<TCtx>(n.RuntimeName, arr.ToList(), ctx.Tracer);
         }
 
         static IRTNode<TCtx> CompileSelector<TCtx>(BuildCtx<TCtx> ctx, SelectorNode n)
         {
             var arr = GetListChildren(ctx, n, nameof(SelectorNode.Children));
-            return new SelectorRT<TCtx>(n.RuntimeName, arr, ctx.Tracer);
+            return new RTSelector<TCtx>(n.RuntimeName, arr.ToList(), ctx.Tracer);
         }
 
         static IRTNode<TCtx> CompileParallel<TCtx>(BuildCtx<TCtx> ctx, ParallelNode n)
@@ -278,21 +279,21 @@ namespace XSkillSystem
                     break;
             }
 
-            return new ParallelRT<TCtx>(n.RuntimeName, arr, policy, ctx.Tracer);
+            return new RTParallel<TCtx>(n.RuntimeName, arr.ToList(), (BTParallelPolicy)policy, tracer:ctx.Tracer);
         }
 
         static IRTNode<TCtx> CompileRandomSelector<TCtx>(BuildCtx<TCtx> ctx, RandomSelectorNode n)
         {
             var arr = GetListChildren(ctx, n, nameof(RandomSelectorNode.Children));
             var w = n.Weights;
-            return new RandomSelectorRT<TCtx>(n.RuntimeName, arr, w, ctx.Tracer);
+            return new RTRandomSelector<TCtx>(n.RuntimeName, arr, w, ctx.Tracer);
         }
 
         static IRTNode<TCtx> CompileSubTree<TCtx>(BuildCtx<TCtx> ctx, SubTreeNode n)
         {
             if (n.Graph == null) throw new Exception($"SubTree `{n.RuntimeName}` 未指定 Graph。");
             var sub = Build(n.Graph, ctx.Lib, n.InheritTracer ? ctx.Tracer : new ConsoleTracer());
-            return new SubTreeRT<TCtx>(n.RuntimeName, sub, ctx.Tracer);
+            return new RTSubTree<TCtx>(n.RuntimeName, sub, ctx.Tracer);
         }
 
         static IRTNode<TCtx> CompileForEach<TCtx>(BuildCtx<TCtx> ctx, ForEachTargetsNode n)
@@ -312,7 +313,7 @@ namespace XSkillSystem
         {
             var childRt = GetSingleChild(ctx, cg, nameof(ChannelGuardNode.Child));
             // childRt may be null (checked by ChannelGuardRT constructor / runtime)
-            return new ChannelGuardRT<TCtx>(
+            return new RTChannelGuard<TCtx>(
                 cg.RuntimeName,
                 childRt,
                 Channel.Cast,
@@ -331,22 +332,22 @@ namespace XSkillSystem
         
         static IRTNode<TCtx> Compile_TLPlay<TCtx>(BuildCtx<TCtx> ctx, TL_PlayNode n)
         {
-            return new TL_PlayRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+            return new RTTL_Play<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
         }
         static IRTNode<TCtx> Compile_TLStop<TCtx>(BuildCtx<TCtx> ctx, TL_StopNode n)
         {
-            return new TL_StopRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+            return new RTTL_Stop<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
         }
         static IRTNode<TCtx> Compile_TLWait<TCtx>(BuildCtx<TCtx> ctx, TL_WaitSignalNode n)
         {
-            return new TL_WaitSignalRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+            return new RTTL_WaitSignal<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
         }
 
         // Compile CastTimeNode -> CastTimeRT
         static IRTNode<TCtx> Compile_CastTime<TCtx>(BuildCtx<TCtx> ctx, CastTimeNode cd)
         {
             var childRt = GetSingleChild(ctx, cd, nameof(CastTimeNode.Child));
-            return new CastTimeRT<TCtx>(
+            return new RTCastTime<TCtx>(
                 cd.RuntimeName,
                 childRt,
                 cd.Duration,

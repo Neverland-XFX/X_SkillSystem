@@ -1,9 +1,9 @@
 ﻿namespace XSkillSystem
 {
     // =================== 装饰器 ===================
-    public sealed class InverterRT<TCtx> : RTDecorator<TCtx>
+    public sealed class RTInverter<TCtx> : RTDecorator<TCtx>
     {
-        public InverterRT(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
+        public RTInverter(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
         {
         }
 

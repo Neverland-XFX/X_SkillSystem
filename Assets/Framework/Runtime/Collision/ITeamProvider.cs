@@ -4,7 +4,7 @@ namespace XSkillSystem
 {
     public interface ITeamProvider
     {
-        int TeamId{get;set;}
+        public int TeamId{get;set;}
     }
 
 }

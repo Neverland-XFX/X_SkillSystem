@@ -1,8 +1,8 @@
 ﻿namespace XSkillSystem
 {
-    public sealed class FailureRT<TCtx> : RTDecorator<TCtx>
+    public sealed class RTFailure<TCtx> : RTDecorator<TCtx>
     {
-        public FailureRT(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
+        public RTFailure(string name, IRTNode<TCtx> child, IBTTracer tracer) : base(name, child, tracer)
         {
         }
 
