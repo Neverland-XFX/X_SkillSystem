@@ -1,0 +1,460 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8740805357464450914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff1fcb43dbf4660b1f7242b46123b11, type: 3}
+  m_Name: TL_Wait Signal
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 360, y: 72}
+  folded: 0
+  ports:
+    keys:
+    - In
+    values:
+    - _fieldName: In
+      _node: {fileID: -8740805357464450914}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 4
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: de06923f70374050b98f460d589d3a68
+  Config: {fileID: 11400000, guid: 3f8bd479c1e08b94ab536b64e60b0011, type: 2}
+--- !u!114 &-4640084004256820542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Sequence
+  m_EditorClassIdentifier: Assembly-CSharp:XSkillSystem:SequenceNode
+  graph: {fileID: 11400000}
+  position: {x: -248, y: -136}
+  folded: 0
+  ports:
+    keys:
+    - Children
+    - In
+    - Children 0
+    - Children 1
+    - Children 2
+    - Children 3
+    - Children 4
+    - Children 5
+    - Children 6
+    values:
+    - _fieldName: Children
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: System.Collections.Generic.List`1[[XSkillSystem.BTNodeBase,
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: In
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Child
+        node: {fileID: 5273954223793440222}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Children 0
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 1
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: In
+        node: {fileID: -1342913149963759044}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 2
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 3
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 4
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 5
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: In
+        node: {fileID: -58669111813129933}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Children 6
+      _node: {fileID: -4640084004256820542}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  In: {fileID: 0}
+  _guid: 177fc7d5506b470b803e0531c92d6160
+  Children:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &-1342913149963759044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Cast Time
+  m_EditorClassIdentifier: Assembly-CSharp:XSkillSystem:CastTimeNode
+  graph: {fileID: 11400000}
+  position: {x: -152, y: 104}
+  folded: 0
+  ports:
+    keys:
+    - Child
+    - In
+    values:
+    - _fieldName: Child
+      _node: {fileID: -1342913149963759044}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: In
+      _node: {fileID: -1342913149963759044}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 1
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: 97b3d541f0ae46b5928104071e4679c9
+  Child: {fileID: 0}
+  Duration: 1.2
+  Channel: 10
+  Priority: 10
+  InterruptStates: 7
+--- !u!114 &-58669111813129933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Action
+  m_EditorClassIdentifier: Assembly-CSharp:XSkillSystem:ActionNode
+  graph: {fileID: 11400000}
+  position: {x: 296, y: 280}
+  folded: 0
+  ports:
+    keys:
+    - In
+    values:
+    - _fieldName: In
+      _node: {fileID: -58669111813129933}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 5
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: 96e82dfb0a8a4f15914fcaf9b8885953
+  ActionId: SpawnProjectile
+  UserData: {fileID: 11400000, guid: e1a853f6b00255b4aa8a8c38930b5ece, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbcee10f10b418d9bd3455bfb044733, type: 3}
+  m_Name: BT_FireballMain
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5273954223793440222}
+  - {fileID: -58669111813129933}
+  - {fileID: -1342913149963759044}
+  - {fileID: -4640084004256820542}
+  GraphId: Skill.Graph
+  Version: 1
+  BlackboardDefaults: {fileID: 0}
+--- !u!114 &3098349563318864386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60845a0771b94c5da1ddfe19858784ba, type: 3}
+  m_Name: TL_Play
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 88, y: 120}
+  folded: 0
+  ports:
+    keys:
+    - In
+    values:
+    - _fieldName: In
+      _node: {fileID: 3098349563318864386}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 2
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: f66bd8fac87d42cebe060de4207ef865
+  Config: {fileID: 11400000, guid: f232d3c74c9cbae489fa5a44bed22639, type: 2}
+--- !u!114 &4461129101186166879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcbd789f2f304e8ea54992649063f28a, type: 3}
+  m_Name: TL_Stop
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -40, y: 408}
+  folded: 0
+  ports:
+    keys:
+    - In
+    values:
+    - _fieldName: In
+      _node: {fileID: 4461129101186166879}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 6
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: c1ab7c68db0c44a5b356e4791541714e
+  Config: {fileID: 0}
+--- !u!114 &5273954223793440222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 242d5135a1954f3da86f38a3738187d5, type: 3}
+  m_Name: Root
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -280}
+  folded: 0
+  ports:
+    keys:
+    - Child
+    - In
+    values:
+    - _fieldName: Child
+      _node: {fileID: 5273954223793440222}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: In
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: In
+      _node: {fileID: 5273954223793440222}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: 9e9768e10d5145ec9965dc5f0984bba4
+  Child: {fileID: 0}
+--- !u!114 &7043478555985487005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff1fcb43dbf4660b1f7242b46123b11, type: 3}
+  m_Name: TL_Wait Signal
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 360, y: -72}
+  folded: 0
+  ports:
+    keys:
+    - In
+    values:
+    - _fieldName: In
+      _node: {fileID: 7043478555985487005}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 3
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: ae03daa9a9d044d884e73af33c1a46c0
+  Config: {fileID: 11400000, guid: e55acc91826e84945920ca259af61c80, type: 2}
+--- !u!114 &7842501105210513341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f89bdc56ba4bc7b43abd571e38a85d, type: 3}
+  m_Name: Channel Guard
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -360, y: 104}
+  folded: 0
+  ports:
+    keys:
+    - Child
+    - In
+    values:
+    - _fieldName: Child
+      _node: {fileID: 7842501105210513341}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: In
+      _node: {fileID: 7842501105210513341}
+      _typeQualifiedName: XSkillSystem.BTNodeBase, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Children 0
+        node: {fileID: -4640084004256820542}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  In: {fileID: 0}
+  _guid: f4dbb5ba072c41339fb0833276e302c3
+  Child: {fileID: 0}
+  Channel: 10
+  Priority: 10
+  Timeout: 0

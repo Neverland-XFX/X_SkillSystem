@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f707c204d1c492ca5877992dd5d92f5, type: 3}
+  m_Name: Projectile_Fireball
+  m_EditorClassIdentifier: 
+  VisualPrefab: {fileID: 0}
+  Speed: 22
+  Accel: 0
+  Gravity: {x: 0, y: 0, z: 0}
+  Lifetime: 8
+  Radius: 0.15
+  Pierce: 0
+  MaxHitsPerTarget: 1
+  HitLayers:
+    serializedVersion: 2
+    m_Bits: 439
+  UseSphereCast: 1
+  Homing: 0
+  HomingTurnRateDeg: 360
+  TargetRule: {fileID: 11400000, guid: bfb5c3a379d5b1b47b3891b8891f3b4f, type: 2}
+  OnHitSubTree: {fileID: 11400000, guid: 0031a6b045d7c9d43bb5bace16708e9b, type: 2}

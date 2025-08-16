@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d76eeb2f304fc2b70ab363c6c8b034, type: 3}
+  m_Name: ABC_BurnDOT
+  m_EditorClassIdentifier: 
+  Buff: {fileID: 11400000, guid: a572760b15ed7524a9bd60e06e4f0d2f, type: 2}
+  Stacks: 1
+  ToTarget: 1
