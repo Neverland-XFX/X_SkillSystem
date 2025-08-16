@@ -28,6 +28,8 @@ namespace XSkillSystem
             while (_i < _children.Length)
             {
                 var c = _children[_i];
+                // if(c.Name )
+                
                 var s = c.Tick(ref ctx, rng);
                 switch (s)
                 {

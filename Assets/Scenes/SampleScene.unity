@@ -245,6 +245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ba25036f134f5b921f2f2be1062a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImmuneTo: 
+  VulnerableTo: 
+  _immunityMask:
+    _bits: 0
+  _vulnerableMask:
+    _bits: 0
 --- !u!114 &703631020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6277,7 +6283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7926a65a904c47a710be6fb1cf266c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkillGraph: {fileID: 11400000, guid: b5677a85987e60347bd6240f5fc16145, type: 2}
+  SkillGraph: {fileID: 11400000, guid: 0bf0da1f63a505648866a18c1b69a005, type: 2}
   Numbers: {fileID: 11400000, guid: c9201d1f35e6bb14799605ff9e328315, type: 2}
 --- !u!1 &1561243735409733400
 GameObject:
@@ -6380,6 +6386,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ba25036f134f5b921f2f2be1062a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImmuneTo: 
+  VulnerableTo: 
+  _immunityMask:
+    _bits: 0
+  _vulnerableMask:
+    _bits: 0
 --- !u!1 &1561243735409733406
 GameObject:
   m_ObjectHideFlags: 0

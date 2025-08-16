@@ -102,6 +102,8 @@ namespace XSkillSystem
                 return BTStatus.Success;
             }
 
+            Exit(BTStatus.Success);
+            if(Child == null) return BTStatus.Success;
             var btStatus = Child.Tick(ref ctx, rng); // 可在读条期间并行动画/特效
             Exit(BTStatus.Running);
             return BTStatus.Running;

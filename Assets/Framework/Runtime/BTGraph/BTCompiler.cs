@@ -35,7 +35,25 @@ namespace XSkillSystem
 
             return null;
         }
-
+        // ------- 辅助函数：查找动态端口的第一个有效连接 -------
+        // 例如 baseName = "Children"，xNode 的动态端口名为 "Children 0", "Children 1", ...
+        static NodePort FindFirstDynamicConnection(BTNodeBase node, string baseName)
+        {
+            if (node == null) return null;
+            foreach (var p in node.Ports) // node.Ports 返回 IEnumerable<NodePort>
+            {
+                if (!p.IsOutput) continue;
+                if (string.IsNullOrEmpty(p.fieldName)) continue;
+                // 精准匹配 "Children" 或 "Children <index>"
+                if (p.fieldName.Equals(baseName, StringComparison.Ordinal) ||
+                    p.fieldName.StartsWith(baseName + " ", StringComparison.Ordinal))
+                {
+                    var c = FirstValidConnection(p);
+                    if (c != null) return c;
+                }
+            }
+            return null;
+        }
         // ====== 公开：带报告的 Build ====== //
         public static BTCompileReport BuildWithReport<TCtx>(BTGraph graph, INodeLibrary<TCtx> lib, IBTTracer tracer)
         {
@@ -184,7 +202,7 @@ namespace XSkillSystem
                 SequenceNode n => CompileSequence(ctx, n),
                 SelectorNode n => CompileSelector(ctx, n),
                 ParallelNode n => CompileParallel(ctx, n),
-
+                
                 InverterNode n => new InverterRT<TCtx>(n.RuntimeName,
                     GetSingleChild(ctx, n, nameof(InverterNode.Child)), ctx.Tracer),
                 SucceederNode n => new SucceederRT<TCtx>(n.RuntimeName,
@@ -200,6 +218,13 @@ namespace XSkillSystem
                 ActionNode n => CompileAction(ctx, n),
                 ConditionNode n => CompileCondition(ctx, n),
 
+                ChannelGuardNode n => Compile_ChannelGuard(ctx, n),
+                CastTimeNode n => Compile_CastTime(ctx, n),
+                TL_PlayNode n => Compile_TLPlay(ctx, n),
+                TL_StopNode n => Compile_TLStop(ctx, n),
+                TL_WaitSignalNode n => Compile_TLWait(ctx, n),
+                
+                
                 RandomSelectorNode n => CompileRandomSelector(ctx, n),
                 SubTreeNode n => CompileSubTree(ctx, n),
                 ForEachTargetsNode n => CompileForEach(ctx, n),
@@ -282,7 +307,66 @@ namespace XSkillSystem
             if (fn == null) throw new Exception($"未能解析 ActionId: `{n.ActionId}` in {n.RuntimeName}");
             return new RTAction<TCtx>(n.RuntimeName, fn, ctx.Tracer);
         }
+        // Compile ChannelGuardNode -> ChannelGuardRT
+        static IRTNode<TCtx> Compile_ChannelGuard<TCtx>(BuildCtx<TCtx> ctx, ChannelGuardNode cg)
+        {
+            var childRt = GetSingleChild(ctx, cg, nameof(ChannelGuardNode.Child));
+            // childRt may be null (checked by ChannelGuardRT constructor / runtime)
+            return new ChannelGuardRT<TCtx>(
+                cg.RuntimeName,
+                childRt,
+                Channel.Cast,
+                cg.Priority,
+                cg.Timeout,
+                getSM: (TCtx c) =>
+                {
+                    // 试图从上下文取 StateMachine；这里假定运行时使用 XContext
+                    if (c is XContext xc && xc.Caster != null)
+                        return xc.Caster.GetComponent<StateMachine>();
+                    return null;
+                },
+                bus: null, // 通常由运行时 Node 从 XContext 取得 Bus；传 null 可行
+                ctx.Tracer);
+        }
+        
+        static IRTNode<TCtx> Compile_TLPlay<TCtx>(BuildCtx<TCtx> ctx, TL_PlayNode n)
+        {
+            return new TL_PlayRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+        }
+        static IRTNode<TCtx> Compile_TLStop<TCtx>(BuildCtx<TCtx> ctx, TL_StopNode n)
+        {
+            return new TL_StopRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+        }
+        static IRTNode<TCtx> Compile_TLWait<TCtx>(BuildCtx<TCtx> ctx, TL_WaitSignalNode n)
+        {
+            return new TL_WaitSignalRT<TCtx>(n.RuntimeName, n.Config, ctx.Tracer);
+        }
 
+        // Compile CastTimeNode -> CastTimeRT
+        static IRTNode<TCtx> Compile_CastTime<TCtx>(BuildCtx<TCtx> ctx, CastTimeNode cd)
+        {
+            var childRt = GetSingleChild(ctx, cd, nameof(CastTimeNode.Child));
+            return new CastTimeRT<TCtx>(
+                cd.RuntimeName,
+                childRt,
+                cd.Duration,
+                Channel.Cast,
+                cd.Priority,
+                (StateId)cd.InterruptStates,
+                getSM: (TCtx c) =>
+                {
+                    if (c is XContext xc && xc.Caster != null)
+                        return xc.Caster.GetComponent<StateMachine>();
+                    return null;
+                },
+                getDelta: (TCtx c) =>
+                {
+                    if (c is XContext xc && xc.Clock != null)
+                        return (float)xc.Clock.DeltaTime;
+                    return Time.deltaTime;
+                },
+                ctx.Tracer);
+        }
         static IRTNode<TCtx> CompileCondition<TCtx>(BuildCtx<TCtx> ctx, ConditionNode n)
         {
             var pred = ctx.Lib.ResolveCondition(n.ConditionId, new NodeUserData(n.UserData, n.Guid, n.RuntimeName));
@@ -300,17 +384,38 @@ namespace XSkillSystem
 
         static IRTNode<TCtx> GetSingleChild<TCtx>(BuildCtx<TCtx> ctx, BTNodeBase node, string portName)
         {
+            if (node == null) return null;
+
+            // 尝试直接的命名端口（非动态端口）
             var port = node.GetOutputPort(portName);
             var conn = FirstValidConnection(port);
-            if (conn == null) return null; // 没有效连接就返回 null（由上层做错误提示/短路）
+
+            // 若没有直接端口连接，尝试查找动态命名端口（Children 0 / Children 1 ...）
+            if (conn == null)
+                conn = FindFirstDynamicConnection(node, portName);
+
+            if (conn == null) return null;
+
             var next = conn.node as BTNodeBase;
             if (next == null)
             {
-                Debug.LogWarning($"{node.RuntimeName}.{portName} 连接到非 BT 节点或空连接。");
+                Debug.LogWarning($"{node.RuntimeName}.{portName} 连接到非 BT 节点或空连接（node:{node.name}, port:{portName}）。");
                 return null;
             }
 
             return CompileNode(ctx, next);
+            
+            // var port = node.GetOutputPort(portName);
+            // var conn = FirstValidConnection(port);
+            // if (conn == null) return null; // 没有效连接就返回 null（由上层做错误提示/短路）
+            // var next = conn.node as BTNodeBase;
+            // if (next == null)
+            // {
+            //     Debug.LogWarning($"{node.RuntimeName}.{portName} 连接到非 BT 节点或空连接。");
+            //     return null;
+            // }
+            //
+            // return CompileNode(ctx, next);
         }
 
         // 供 Sequence/Parallel 等用，安全遍历动态端口 Children
@@ -338,17 +443,80 @@ namespace XSkillSystem
 
         static IRTNode<TCtx>[] GetListChildren<TCtx>(BuildCtx<TCtx> ctx, BTNodeBase node, string portName)
         {
-            var port = node.GetOutputPort(portName);
-            if (port == null) return Array.Empty<IRTNode<TCtx>>();
-            var list = new List<IRTNode<TCtx>>(port.ConnectionCount);
-            for (int i = 0; i < port.ConnectionCount; i++)
+            if (node == null) return Array.Empty<IRTNode<TCtx>>();
+
+            // 收集所有符合 "portName" 前缀的输出端口（例如 "Children 0", "Children 1"）
+            var found = new List<(int idx, NodePort port)>();
+            foreach (var p in node.Ports)
             {
-                var next = port.GetConnection(i).node as BTNodeBase;
-                var rt = CompileNode(ctx, next);
-                if (rt != null) list.Add(rt);
+                if (!p.IsOutput) continue;
+                if (string.IsNullOrEmpty(p.fieldName)) continue;
+                if (p.fieldName.Equals(portName, StringComparison.Ordinal))
+                {
+                    // treat as index 0 (no suffix)
+                    found.Add((0, p));
+                    continue;
+                }
+                if (p.fieldName.StartsWith(portName + " ", StringComparison.Ordinal))
+                {
+                    // try parse suffix number
+                    var suffix = p.fieldName.Substring(portName.Length).Trim();
+                    int idx = int.MaxValue;
+                    if (int.TryParse(suffix, out var v)) idx = v;
+                    found.Add((idx, p));
+                }
             }
 
-            return list.ToArray();
+            if (found.Count == 0)
+            {
+                // 兼容旧实现：尝试直接取单个 port（可能对非动态端口有用）
+                var single = node.GetOutputPort(portName);
+                if (single != null)
+                {
+                    var list = new List<IRTNode<TCtx>>();
+                    var c = FirstValidConnection(single);
+                    if (c != null && c.node is BTNodeBase nb)
+                    {
+                        var rt = CompileNode(ctx, nb);
+                        if (rt != null) list.Add(rt);
+                    }
+                    return list.ToArray();
+                }
+                return Array.Empty<IRTNode<TCtx>>();
+            }
+
+            // 按 index 排序，低到高
+            found.Sort((a, b) => a.idx.CompareTo(b.idx));
+
+            var result = new List<IRTNode<TCtx>>(found.Count);
+            foreach (var (idx, port) in found)
+            {
+                var conn = FirstValidConnection(port);
+                if (conn == null) continue; // 该端口没有有效连接
+                var next = conn.node as BTNodeBase;
+                if (next == null)
+                {
+                    Debug.LogWarning($"{node.RuntimeName}.{port.fieldName} 连接到非 BT 节点或 null。");
+                    continue;
+                }
+                var rt = CompileNode(ctx, next);
+                if (rt != null) result.Add(rt);
+            }
+
+            return result.ToArray();
+        
+            
+            // var port = node.GetOutputPort(portName);
+            // if (port == null) return Array.Empty<IRTNode<TCtx>>();
+            // var list = new List<IRTNode<TCtx>>(port.ConnectionCount);
+            // for (int i = 0; i < port.ConnectionCount; i++)
+            // {
+            //     var next = port.GetConnection(i).node as BTNodeBase;
+            //     var rt = CompileNode(ctx, next);
+            //     if (rt != null) list.Add(rt);
+            // }
+            //
+            // return list.ToArray();
         }
     }
 }

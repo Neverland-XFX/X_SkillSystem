@@ -166,9 +166,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: -8923451172596666000}
-  - {fileID: -6899292746833275175}
-  - {fileID: -819172690290956375}
   - {fileID: 3774474522113753941}
+  - {fileID: -819172690290956375}
+  - {fileID: -6899292746833275175}
   GraphId: Skill.Graph
   Version: 1
   BlackboardDefaults: {fileID: 0}

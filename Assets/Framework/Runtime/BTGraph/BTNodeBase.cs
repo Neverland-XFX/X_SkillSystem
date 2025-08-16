@@ -11,7 +11,7 @@ namespace XSkillSystem
     public abstract class BTNodeBase : Node, ISerializationCallbackReceiver
     {
         // 给所有节点一个输入端口，供 Composite 的 Children 输出连入
-        [Input(connectionType: ConnectionType.Override)] [LabelText("In"), GUIColor(0.75f, 0.9f, 1f)]
+        [Input(ShowBackingValue.Never,ConnectionType.Override)] [LabelText("In"), GUIColor(0.75f, 0.9f, 1f)]
         public BTNodeBase In;
 
         [SerializeField, HideInInspector] private string _guid;
