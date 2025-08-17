@@ -57,21 +57,19 @@ namespace XSkillSystem
                         return BTStatus.Failure;
                     }
 
+                    bus.Unsubscribe<EV_TL_Signal>(_subHandle);
+                    _subHandle = bus.Subscribe<EV_TL_Signal>(OnEV_TL_SignalHandle);
                     // 兼容性订阅：EventBusUtil 会返回 IDisposable 或 null（若不可退订）
-                    _subDisposable = EventBusUtil.SubscribeTo<EV_TL_Signal>(bus, ev =>
-                    {
-                        if (!string.IsNullOrEmpty(_cfg.TimelineId) && ev.TimelineId != _cfg.TimelineId) return;
-                        if (string.Equals(ev.SignalName, _cfg.SignalName, StringComparison.Ordinal))
-                        {
-                            _triggered = true;
-                            Tracer?.Enter($"[{Name}] 收到信号 {ev.SignalName} (Timeline={ev.TimelineId})");
-                        }
-                    }, out _subHandle);
+                    // _subDisposable = EventBusUtil.SubscribeTo<EV_TL_Signal>(bus, ev =>
+                    // {
+                    //     if (!string.IsNullOrEmpty(_cfg.TimelineId) && ev.TimelineId != _cfg.TimelineId) return;
+                    //     if (string.Equals(ev.SignalName, _cfg.SignalName, StringComparison.Ordinal))
+                    //     {
+                    //         _triggered = true;
+                    //         Tracer?.Enter($"[{Name}] 收到信号 {ev.SignalName} (Timeline={ev.TimelineId})");
+                    //     }
+                    // }, out _subHandle);
                     Tracer?.Enter($"[{Name}] 订阅 EV_TL_Signal (handle={_subHandle}) 等待 '{_cfg.SignalName}'");
-                    if (_subDisposable == null)
-                    {
-                        _triggered = true;
-                    }
                 }
             }
 
@@ -90,6 +88,16 @@ namespace XSkillSystem
             }
 
             return BTStatus.Running;
+        }
+
+        private void OnEV_TL_SignalHandle(EV_TL_Signal ev)
+        {
+            if (!string.IsNullOrEmpty(_cfg.TimelineId) && ev.TimelineId != _cfg.TimelineId) return;
+            if (string.Equals(ev.SignalName, _cfg.SignalName, StringComparison.Ordinal))
+            {
+                _triggered = true;
+                Tracer?.Enter($"[{Name}] 收到信号 {ev.SignalName} (Timeline={ev.TimelineId})");
+            }
         }
     }
 }

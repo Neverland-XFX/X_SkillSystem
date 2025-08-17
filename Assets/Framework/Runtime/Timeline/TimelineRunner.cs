@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -104,6 +105,13 @@ namespace XSkillSystem
             Director.Play();
             SetSpeed(timeScale);
             Bus?.Publish(new EV_TL_Play(gameObject, def.Id));
+            
+            //TODO:测试发信号
+            Task.Run(async () =>
+            {
+                await Task.Delay(500);
+                Bus?.Publish(new EV_TL_Signal());
+            });
         }
 
         public void Stop()

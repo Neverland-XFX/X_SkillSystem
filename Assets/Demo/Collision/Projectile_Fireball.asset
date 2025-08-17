@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Projectile_Fireball
   m_EditorClassIdentifier: 
   VisualPrefab: {fileID: 0}
-  Speed: 22
+  Speed: 2
   Accel: 0
   Gravity: {x: 0, y: 0, z: 0}
   Lifetime: 8

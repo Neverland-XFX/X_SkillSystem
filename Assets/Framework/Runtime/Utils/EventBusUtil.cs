@@ -1,6 +1,7 @@
 ﻿// Assets/Framework/Runtime/Utils/EventBusUtil.cs
 using System;
 using System.Reflection;
+using UnityEngine;
 
 namespace XSkillSystem
 {
@@ -47,7 +48,32 @@ namespace XSkillSystem
             // 2) fallback: look for Subscribe<T>(Action<T>) returning void (no handle) -> cannot unsubscribe, so just call and return null-disposable
             try
             {
-                var mi = busType.GetMethod("Subscribe", BindingFlags.Instance | BindingFlags.Public);
+                // var mi = busType.GetMethod("Subscribe", BindingFlags.Instance | BindingFlags.Public);
+                // Type[] paramTypes = new Type[] { typeof(Action<>) };
+                // MethodInfo mi = busType.GetMethod("Subscribe", BindingFlags.Instance | BindingFlags.Public, null, paramTypes, null);
+                // Type[] paramTypes = new Type[] { typeof(Action<>), typeof(Predicate<>) };
+                // MethodInfo mi = busType.GetMethod("Subscribe", BindingFlags.Instance | BindingFlags.Public, null, paramTypes, null);
+                
+                
+                MethodInfo[] allMethods = busType.GetMethods(BindingFlags.Instance | BindingFlags.Public);
+                MethodInfo mi = null;
+
+                foreach (var method in allMethods)
+                {
+                    if (method.Name == "Subscribe" && method.IsGenericMethod)
+                    {
+                        ParameterInfo[] parameters = method.GetParameters();
+                        if (parameters.Length == 1 && 
+                            parameters[0].ParameterType.IsGenericType && 
+                            parameters[0].ParameterType.GetGenericTypeDefinition() == typeof(Action<>))
+                        {
+                            mi = method;  // 不带filter的
+                            break;
+                        }
+                        // 对于带filter的：if (parameters.Length == 2 && parameters[0]... == typeof(Action<>) && parameters[1]... == typeof(Predicate<>))
+                    }
+                }
+                
                 if (mi != null)
                 {
                     // Use generic method MakeGenericMethod
@@ -56,7 +82,11 @@ namespace XSkillSystem
                     return null; // cannot unsubscribe
                 }
             }
-            catch { /* ignore */ }
+            catch(Exception e)
+            {
+                /* ignore */ 
+                Debug.LogWarning($"Can't subscribe to {busType}, error: {e.Message}");
+            }
 
             return null;
         }

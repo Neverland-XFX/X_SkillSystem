@@ -1,4 +1,5 @@
-﻿using UnityEngine.Playables;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 
 namespace XSkillSystem
 {
@@ -41,6 +42,7 @@ namespace XSkillSystem
                         // Play(def, overrideBindings:null, startTime, timeScale)
                         tr.Play(def, null, start, speed);
                         Tracer?.Enter($"[{Name}] TimelineRunner.Play def={def?.name} start={start} speed={speed}");
+                        Debug.LogWarning($"[{Name}] TimelineRunner.Play def={def?.name} start={start} speed={speed}");
                         _played = true;
                         Exit(BTStatus.Success);
                         return BTStatus.Success;
